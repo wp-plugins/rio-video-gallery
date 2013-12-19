@@ -3,7 +3,7 @@ Contributors: Riosis Group
 Donate link: http://riosis.com/plugins/
 Tags: video gallery, video, youtube, vimeo, dailymotion
 Requires at least: 3.5
-Tested up to: 3.5
+Tested up to: 3.8
 Stable tag: 1.0
 License: GPLv2
 
@@ -18,7 +18,7 @@ This section describes how to install the plugin and get it working in 5 simple 
 1. Upload `rio-video-gallery` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. You can see a new section named "Video Gallery" appeared in sidebar.
-4. Place the shortcode displayed in settings panel  "[videogallery view="all"]" in any page or post.
+4. Place the shortcode displayed in settings panel in any page or post.
 5. You are done.
 
 == Frequently Asked Questions ==
@@ -29,12 +29,8 @@ In settings tab under the video gallery, you can generate shortcode based on vid
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets 
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png` 
-(or jpg, jpeg, gif).
-
-2. This is the second screen shot
+1. Add video interface.
+2. Settings panel.
 
 == Changelog ==
 

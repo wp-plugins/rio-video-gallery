@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Rio Video Gallery
  * Plugin URI: http://web.riosis.com
- * Description: A powerful Video Gallery plugin that allows you to embed videos from YouTube, Vimeo and daily motion through categories. You can manage them through a neat and user-friendly settings panel. Also added a help option for user reference.
+ * Description: A powerful Video Gallery plugin that allows you to embed videos from YouTube, Vimeo and daily motion through categories.
  * Version: 1.0
  * Author: Riosis Web Team
  * Author URI: http://web.riosis.com
