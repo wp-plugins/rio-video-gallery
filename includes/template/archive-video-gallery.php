@@ -4,9 +4,7 @@ $singular_name = $obj->labels->singular_name;
 ?>
 <?php
 //get video_settings options in serialized format...
-$video_settings = get_option('video_gallery_settings');
-
-$data_results = unserialize($video_settings); //unserialize the $video_settings array..
+$data_results = get_option('video_gallery_settings');
 
 $videog_main_title_res = $data_results['videog_main_title'];//main title
 $vposted_date_display_res = $data_results['vposted_date_display'];//posted date and view count
