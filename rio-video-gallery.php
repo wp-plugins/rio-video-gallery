@@ -258,7 +258,7 @@ function video_gallery_settings_fun(){
         <td align="right">Enable post order</td>
         <td>:</td>
         <td><input type="checkbox" value="1" id="vpost_order" name="vpost_order" <?php if(!empty($vpost_order_res)) { echo 'checked="checked"';}?>></td>
-        <td class="desc">&nbsp;&nbsp;If enabled, videos will displays with post order.</td>
+        <td class="desc">&nbsp;&nbsp;If enabled, videos will display according to the post order entered.</td>
       </tr>
     </table>
     <table id="tbl_vpostorder_settings">
@@ -899,7 +899,7 @@ Click on the "Add New" button on the top of the page to create a new video post.
 <li><strong>Post Order:</strong>Post order specifies the ordering for this post. The post will show in ascending order corresponding to the numerical value of this field.</li>
 <li><strong>Select your video provider:</strong> You can choose anyone from the three providers, such as YouTube, Vimeo, Dailymotion.</li>
 <li><strong>Video ID:</strong> The video ID corresponding to the provider.</li>
-<li><strong>Short code:</strong> To get this post in a specific page or post, you need to edit a page or post and insert its shortcode into the WordPress text editor</li>
+<li><strong>Short code:</strong> To get this post in a specific page or post, you need to edit a page or post and insert its shortcode into the WordPress text editor.</li>
 </ol>
 </li>
 </ul>
@@ -920,7 +920,7 @@ The complete video gallery settings are under "Settings" options. Here you can m
 <li><strong>Gallery Layout: </strong>
 You can choose video layout such as thumbnail only or by title.</li>
 <li><strong>Short codes:</strong> You can place your video into pages and posts with their shortcodes. You can find the shortcode for each video category or all video. To insert the video shortcode, edit a page or post and insert its shortcode into the WordPress text editor.
-<p>Please note that you have to update your video options before leaving from the settings page. These settings options only seems in shortcode used pages and posts.</p>
+<p>Please note that you have to update your video options before leaving from the settings page.</p>
 </li>
 </ul>
 </li>
@@ -977,7 +977,7 @@ You can choose video layout such as thumbnail only or by title.</li>
 return $output;
 }?>
 <?php function get_youtube_id(){
-$output = '<h3>Getting Video Id</h3>
+$output = '<h3>Getting Youtube Video Id</h3>
 <p><img src="'.plugins_url().'/rio-video-gallery/help/images/get-youtube-video-id.png" alt="" /><p>
 ';
 return $output;
