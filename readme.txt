@@ -33,6 +33,7 @@ In settings tab under the video gallery, you can generate shortcode based on vid
 
 1. Add video interface.
 2. Settings panel.
+3. Video Gallery Preview.
 
 == Changelog ==
 
