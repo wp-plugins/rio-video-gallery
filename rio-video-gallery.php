@@ -82,6 +82,16 @@ function fun_video_gallery_metabox_display( $video_gallery )
 	$post_order_res = get_post_meta($video_gallery->ID,'video_post_order', true );
 	$provider_res= get_post_meta($video_gallery->ID,'video_provider',true);
 	$video_id_res = esc_html( get_post_meta( $video_gallery->ID, 'video_id', true ) );
+	$_custom_video_size_width = esc_html( get_post_meta( $video_gallery->ID, '_custom_video_size_width', true ) );
+	if(empty($_custom_video_size_width))
+	{
+		$_custom_video_size_width=600;
+	}
+	$_custom_video_size_height = esc_html( get_post_meta( $video_gallery->ID, '_custom_video_size_height', true ) );
+	if(empty($_custom_video_size_height))
+	{
+		$_custom_video_size_height=400;
+	}
 	$video_post_id = $video_gallery->ID;
 ?>
 
@@ -116,8 +126,12 @@ function fun_video_gallery_metabox_display( $video_gallery )
       <td>:</td>
       <td><input size="40" value="<?php if(!empty($video_id_res)) { echo $video_id_res;}?>" name="video_id" type="text" class="widther" /></td>
     </tr>
-    <?php if (!empty($video_id_res) && !empty($provider_res)) {?>
-    <?php }?>
+     <tr>
+      <td align="right"><b>Custom Video Player size</b></td>
+      <td>:</td>
+      <td colspan="2">
+      <input size="10" name="_custom_video_size_width" type="text" value='<?php echo $_custom_video_size_width;?>'> x <input size="10" name="_custom_video_size_height" type="text" value='<?php echo $_custom_video_size_height;?>'>&nbsp;&nbsp;<em>Size of the video player in pixels</em>&nbsp;&nbsp;&nbsp;</td>
+    </tr>
     <tr>
       <td align="right"><b>Short code</b></td>
       <td>:</td>
@@ -145,6 +159,8 @@ function save_video_meta_values( $video_postId,$video_gallery )
 			update_post_meta( $video_postId, 'video_post_order',$postOrder);
 			update_post_meta( $video_postId, 'video_provider',$_POST['video_provider'] );
 			update_post_meta( $video_postId, 'video_id',$_POST['video_id'] );
+			update_post_meta( $video_postId, '_custom_video_size_width',$_POST['_custom_video_size_width'] );
+			update_post_meta( $video_postId, '_custom_video_size_height',$_POST['_custom_video_size_height'] );
 		}
 	}
 }
@@ -631,8 +647,8 @@ function fun_video_post_shortcode($atts)
 			
 	$vposted_date_display_pshort = $data_results['vposted_date_display'];
 
-	$video_sthumb_width_pres = $data_results['video_sthumb_width'];
-	$video_sthumb_height_pres = $data_results['video_sthumb_height'];
+	/*$video_sthumb_width_pres = $data_results['video_sthumb_width'];
+	$video_sthumb_height_pres = $data_results['video_sthumb_height'];*/
 ?>
 <?php if(!empty($videoPost_id)) {?>
 <?php 
@@ -644,6 +660,16 @@ $posttitle = $getpost->post_title; //returns post title..
 
 $provider_pres= get_post_meta($videoPost_id,'video_provider',true); // returns video provider from post..
 $video_id_pres = get_post_meta($videoPost_id, 'video_id', true ); //returns corresponding video id..
+$video_sthumb_width_pres=get_post_meta($videoPost_id, '_custom_video_size_width', true ); //returns video custom width value
+if(empty($video_sthumb_width_pres))
+{
+	$video_sthumb_width_pres=$data_results['video_sthumb_width'];
+}
+$video_sthumb_height_pres=get_post_meta($videoPost_id, '_custom_video_size_height', true ); //returns video custom height value
+if(empty($video_sthumb_height_pres))
+{
+	$video_sthumb_height_pres=$data_results['video_sthumb_height'];
+}
 ?>
 <?php if(!empty($video_id_pres)) {?>
 <figure>
