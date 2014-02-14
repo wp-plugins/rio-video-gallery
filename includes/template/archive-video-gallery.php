@@ -16,6 +16,13 @@ if(empty($video_thumb_width) || empty($video_thumb_height))
 	$video_thumb_width = 300;
 	$video_thumb_height = 200;
 }
+//video link target
+	$_video_link_target = $data_results['_video_link_target'];
+
+	if(empty($_video_link_target))
+	{
+	$_video_link_target='popup';
+	}
 ?>
 <section id="content-area"> 
   <!-- //Left column -->
@@ -42,12 +49,15 @@ if(empty($video_thumb_width) || empty($video_thumb_height))
 			?>
     <?php if(empty($video_layout) || $video_layout == 1) {?>
 <article>
-  <figure> <a href="<?php the_permalink();?>">&nbsp;</a>
+  <figure>
     <?php if(!empty($video_provider) && $video_provider == 'youtube') {?>
+     <a <?php if($_video_link_target == 'popup'){?> href="http://www.youtube.com/watch?v=<?php echo $video_id;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?>  title="<?php the_title();?>">&nbsp;</a>
     <img src="http://img.youtube.com/vi/<?php echo $video_id;?>/0.jpg" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width; ?>" height="<?php echo $video_thumb_height; ?>">
     <?php } else if(!empty($video_provider) && $video_provider == 'vimeo') {?>
+     <a <?php if($_video_link_target == 'popup'){?> href="http://vimeo.com/<?php echo $video_id;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">&nbsp;</a>
     <img src="<?php echo getVimeoThumb($video_id);?>" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width; ?>" height="<?php echo $video_thumb_height; ?>">
     <?php } else if(!empty($video_provider) && $video_provider == 'dailymotion') {?>
+    <a <?php if($_video_link_target == 'popup'){?> href="http://www.dailymotion.com/embed/video/<?php echo $video_id;?>?iframe=true&width=500&height=344" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">&nbsp;</a>
     <img src="http://www.dailymotion.com/thumbnail/video/<?php echo $video_id;?>" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width; ?>" height="<?php echo $video_thumb_height; ?>">
     <?php }?>
      </figure>
@@ -60,20 +70,40 @@ if(empty($video_thumb_width) || empty($video_thumb_height))
 <?php } //layout condition 1 close here... ?>
 <?php if(!empty($video_layout) && $video_layout == 2) {?>
 <article>
-  <figure> <a href="<?php the_permalink();?>">&nbsp;</a>
+  <figure>
     <?php if(!empty($video_provider) && $video_provider == 'youtube') {?>
+     <a <?php if($_video_link_target == 'popup'){?> href="http://www.youtube.com/watch?v=<?php echo $video_id;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?>  title="<?php the_title();?>">&nbsp;</a>
     <img src="http://img.youtube.com/vi/<?php echo $video_id;?>/0.jpg" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width; ?>" height="<?php echo $video_thumb_height; ?>">
     <?php } else if(!empty($video_provider) && $video_provider == 'vimeo') {?>
+    <a <?php if($_video_link_target == 'popup'){?> href="http://vimeo.com/<?php echo $video_id;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">&nbsp;</a>
     <img src="<?php echo getVimeoThumb($video_id);?>" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width; ?>" height="<?php echo $video_thumb_height; ?>">
     <?php } else if(!empty($video_provider) && $video_provider == 'dailymotion') {?>
+    <a <?php if($_video_link_target == 'popup'){?> href="http://www.dailymotion.com/embed/video/<?php echo $video_id;?>?iframe=true&width=500&height=344" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">&nbsp;</a>
     <img src="http://www.dailymotion.com/thumbnail/video/<?php echo $video_id;?>" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width; ?>" height="<?php echo $video_thumb_height; ?>">
     <?php }?>
      </figure>
-  <header> <a href="<?php the_permalink();?>">
-    <h1>
-      <?php $title = get_the_title(); echo substr($title,0,25);?>
-    </h1>
-    </a>
+  <header> <h1 itemprop="name"> 
+      <?php if(!empty($video_provider) && $video_provider == 'youtube')
+	  { ?>
+       <a <?php if($_video_link_target == 'popup'){?> href="http://www.youtube.com/watch?v=<?php echo $video_id;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?>  title="<?php the_title();?>">
+        <?php $title = get_the_title(); echo substr($title,0,27);?>
+        </a> 
+      <?php }elseif(!empty($video_provider) && $video_provider == 'vimeo')
+	  {?>
+       <a <?php if($_video_link_target == 'popup'){?> href="http://vimeo.com/<?php echo $video_id;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">
+        <?php $title = get_the_title(); echo substr($title,0,27);?>
+        </a> 
+      <?php }elseif(!empty($video_provider) && $video_provider == 'dailymotion')
+	  {?>
+      <a <?php if($_video_link_target == 'popup'){?> href="http://www.dailymotion.com/embed/video/<?php echo $video_id;?>?iframe=true&width=500&height=344" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">
+        <?php $title = get_the_title(); echo substr($title,0,27);?>
+        </a> 
+      <?php }else{?>
+      <a href="<?php the_permalink();?>">
+        <?php $title = get_the_title(); echo substr($title,0,27);?>
+        </a> 
+        <?php } ?>
+        </h1>
     <?php if(!empty($vposted_date_display_res)) {?>
     <p><span>Views <?php echo getPostViews($postid);?></span><span><?php echo human_time_diff( get_the_time('U'), current_time('timestamp') ) . ' ago';?></span></p>
     <?php } ?>

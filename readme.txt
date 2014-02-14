@@ -1,15 +1,15 @@
 === Rio Video Gallery ===
 Contributors: Riosis Group
 Donate link: http://riosis.com/themes/rio-video-gallery/
-Tags: video gallery, YouTube, Vimeo, Dailymotion
+Tags: video gallery, YouTube, Vimeo, Dailymotion, video gallery pagination, prettyphoto
 Requires at least: 3.5
-Tested up to: 3.8
-Stable tag: 1.0
+Tested up to: 3.8.1
+Stable tag: 1.1
 License: GPLv2
 
 == Description ==
 
-A powerful Video Gallery plugin that allows you to embed videos from YouTube, Vimeo and Daily motion through categories. You can manage them through a neat and user-friendly settings panel. Also added a help option for user reference.
+A powerful Video Gallery plugin that allows you to embed videos from YouTube, Vimeo and Daily motion through categories. You can manage them through a neat and user-friendly settings panel. Also added a help option for user reference. Used prettyphoto for video Popup
 
 == Installation ==
 
@@ -29,6 +29,10 @@ Visit <a href='http://riosis.com/themes/rio-video-gallery/'>Plugin homepage</a>
 
 In settings tab under the video gallery, you can generate shortcode based on video categories. 
 
+= Displaying 404 Error =
+
+After installing plugin, Please update it with "/%category%/%postname%/". If already it in the given structure, just press the "Save Changes" button once more.
+
 == Screenshots ==
 
 1. Add video interface.
@@ -41,8 +45,11 @@ In settings tab under the video gallery, you can generate shortcode based on vid
 = 1.0 =
 * The first released version
 * Added help and UI improvements
+
+= 1.1 =
+* Added Popup to Video items
 * Several bug fixes
 
 == Upgrade Notice ==
-= 1.1 =
+= 2.0 =
 Video provider notification on thumbnails. Will available soon.

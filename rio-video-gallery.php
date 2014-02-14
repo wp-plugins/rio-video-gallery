@@ -3,7 +3,7 @@
  * Plugin Name: Rio Video Gallery
  * Plugin URI: http://riosis.com/themes/rio-video-gallery/
  * Description: A powerful Video Gallery plugin that allows you to embed videos from YouTube, Vimeo and Daily motion through categories.
- * Version: 1.0
+ * Version: 1.1
  * Author: Riosis Web Team
  * Author URI: http://web.riosis.com
  */
@@ -40,14 +40,7 @@ function codex_custom_video_gallery() {
     'parent_item_colon' => '',
     'menu_name' => 'Video Gallery'
   );
-	//switch menu image based on version
-	if ( defined( 'MP6' ) && MP6 || version_compare( get_bloginfo( 'version' ), '3.8-dev', '>=' ) ) {
-		$icon_url = 'dashicons-format-video';
-	}
-	else
-	{
-		$icon_url = plugins_url().'/rio-video-gallery/img/video_sb_icon.png';
-	}
+
   $args = array(
     'labels' => $labels,
     'public' => true,
@@ -60,7 +53,7 @@ function codex_custom_video_gallery() {
     'has_archive' => true, 
     'hierarchical' => false,
     'menu_position' => null,
-	'menu_icon' => $icon_url,
+	'menu_icon' => plugins_url().'/rio-video-gallery/img/video_sb_icon.png',
     'supports' => array( 'title', 'editor', 'thumbnail','comments')
   ); 
 
@@ -89,16 +82,6 @@ function fun_video_gallery_metabox_display( $video_gallery )
 	$post_order_res = get_post_meta($video_gallery->ID,'video_post_order', true );
 	$provider_res= get_post_meta($video_gallery->ID,'video_provider',true);
 	$video_id_res = esc_html( get_post_meta( $video_gallery->ID, 'video_id', true ) );
-	$_custom_video_size_width = esc_html( get_post_meta( $video_gallery->ID, '_custom_video_size_width', true ) );
-	if(empty($_custom_video_size_width))
-	{
-		$_custom_video_size_width=600;
-	}
-	$_custom_video_size_height = esc_html( get_post_meta( $video_gallery->ID, '_custom_video_size_height', true ) );
-	if(empty($_custom_video_size_height))
-	{
-		$_custom_video_size_height=400;
-	}
 	$video_post_id = $video_gallery->ID;
 ?>
 
@@ -133,12 +116,8 @@ function fun_video_gallery_metabox_display( $video_gallery )
       <td>:</td>
       <td><input size="40" value="<?php if(!empty($video_id_res)) { echo $video_id_res;}?>" name="video_id" type="text" class="widther" /></td>
     </tr>
-     <tr>
-      <td align="right"><b>Custom Video Player size</b></td>
-      <td>:</td>
-      <td colspan="2">
-      <input size="10" name="_custom_video_size_width" type="text" value='<?php echo $_custom_video_size_width;?>'> x <input size="10" name="_custom_video_size_height" type="text" value='<?php echo $_custom_video_size_height;?>'>&nbsp;&nbsp;<em>Size of the video player in pixels</em>&nbsp;&nbsp;&nbsp;</td>
-    </tr>
+    <?php if (!empty($video_id_res) && !empty($provider_res)) {?>
+    <?php }?>
     <tr>
       <td align="right"><b>Short code</b></td>
       <td>:</td>
@@ -166,8 +145,6 @@ function save_video_meta_values( $video_postId,$video_gallery )
 			update_post_meta( $video_postId, 'video_post_order',$postOrder);
 			update_post_meta( $video_postId, 'video_provider',$_POST['video_provider'] );
 			update_post_meta( $video_postId, 'video_id',$_POST['video_id'] );
-			update_post_meta( $video_postId, '_custom_video_size_width',$_POST['_custom_video_size_width'] );
-			update_post_meta( $video_postId, '_custom_video_size_height',$_POST['_custom_video_size_height'] );
 		}
 	}
 }
@@ -206,7 +183,9 @@ function video_gallery_settings_fun(){
 			
 			$video_layout = $_POST['video_layout'];
 			
-			$data = array('vposted_date_display' => $vposted_date_display,'vpost_order' =>$vpost_order,'vrelated_posts' => $vrelated_posts,'vpost_orderby' => $vpost_orderby,'video_layout' => $video_layout,'video_thumb_width' => $video_thumb_width,'video_thumb_height' => $video_thumb_height,'video_count' => $video_count,'video_sthumb_width' => $video_sthumb_width,'video_sthumb_height' => $video_sthumb_height);
+			$_video_link_target = stripslashes($_POST['_video_link_target']);//portfolio link target 
+			
+			$data = array('vposted_date_display' => $vposted_date_display,'vpost_order' =>$vpost_order,'vrelated_posts' => $vrelated_posts,'vpost_orderby' => $vpost_orderby,'video_layout' => $video_layout,'video_thumb_width' => $video_thumb_width,'video_thumb_height' => $video_thumb_height,'video_count' => $video_count,'video_sthumb_width' => $video_sthumb_width,'video_sthumb_height' => $video_sthumb_height,'_video_link_target' => $_video_link_target);
 			//update video gallery option 
 			$updated_vgallery = update_option('video_gallery_settings',$data);
 		}
@@ -234,6 +213,7 @@ function video_gallery_settings_fun(){
 	}
 	
 	$video_count_res = $data_results['video_count'];
+	$_video_link_target = $data_results['_video_link_target'];
 	
 	
 ?>
@@ -338,6 +318,24 @@ function video_gallery_settings_fun(){
       </div>
     </div>
     <!-- Layout post box ends here..--> 
+    <!-- Link type box..-->
+    <div class="postbox">
+      <div class="inside">
+        <table>
+          <tr>
+            <th align="left">Open Video links in</th>
+          </tr>
+          <tr>
+            <td ><input type="radio" <?php if(!empty($_video_link_target) && $_video_link_target == 'popup') { echo 'checked="checked"';} elseif(empty($_video_link_target)) {echo 'checked="checked"';}?> value="popup" name="_video_link_target" >
+              &nbsp;Popup</td>
+            <td><input type="radio" <?php if(!empty($_video_link_target) && $_video_link_target == 'tab') { echo 'checked="checked"';}?> value="tab" name="_video_link_target">
+              &nbsp;Hyperlink</td>
+            <td class="desc">&nbsp;</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <!-- Link type end here..--> 
     <!-- Short code post box starts here..-->
     <div class="postbox">
       <div class="inside">
@@ -388,7 +386,6 @@ function video_gallery_settings_fun(){
 //for enable scripts.
 wp_register_script('video-custom-script', plugins_url(). '/rio-video-gallery/js/video-gallery-script.js', array('jquery', 'jquery-ui-core', 'jquery-ui-tabs'),'1.0.0', true);
 wp_enqueue_script('video-custom-script');
-
  //for enabling style.
  $css_path = plugins_url().'/rio-video-gallery/css/video-gallery-style.css';
 	 wp_register_style( 'video-custom-style', $css_path);
@@ -426,6 +423,13 @@ function fun_video_gallery_shortcode($atts)
 	if(empty($video_count_gshort))
 	{
 		$video_count_gshort = 5;
+	}
+	//video link target
+	$_video_link_target = $data_results['_video_link_target'];
+
+	if(empty($_video_link_target))
+	{
+	$_video_link_target='popup';
 	}
 ?>
 <div class="rio-video-container">
@@ -498,12 +502,15 @@ function fun_video_gallery_shortcode($atts)
   <?php if(!empty($video_id_shortres)) {?>
   <?php if(empty($video_layout_gshort) || $video_layout_gshort == 1) {?>
   <article itemscope itemtype="http://schema.org/VideoObject">
-    <figure> <a href="<?php the_permalink();?>">&nbsp;</a>
+    <figure> 
       <?php if(!empty($provider_shortres) && $provider_shortres == 'youtube') {?>
+      <a <?php if($_video_link_target == 'popup'){?> href="http://www.youtube.com/watch?v=<?php echo $video_id_shortres;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?>  title="<?php the_title();?>">&nbsp;</a>
       <img src="http://img.youtube.com/vi/<?php echo $video_id_shortres;?>/0.jpg" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width_gshort; ?>" height="<?php echo $video_thumb_height_gshort; ?>" itemprop="thumbnail">
       <?php } else if(!empty($provider_shortres) && $provider_shortres == 'vimeo') {?>
+      <a <?php if($_video_link_target == 'popup'){?> href="http://vimeo.com/<?php echo $video_id_shortres;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">&nbsp;</a>
       <img src="<?php echo getVimeoThumb($video_id_shortres);?>" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width_gshort; ?>" height="<?php echo $video_thumb_height_gshort; ?>" itemprop="thumbnail">
       <?php } else if(!empty($provider_shortres) && $provider_shortres == 'dailymotion') {?>
+      <a <?php if($_video_link_target == 'popup'){?> href="http://www.dailymotion.com/embed/video/<?php echo $video_id_shortres;?>?iframe=true&width=500&height=344" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">&nbsp;</a>
       <img src="http://www.dailymotion.com/thumbnail/video/<?php echo $video_id_shortres;?>" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width_gshort; ?>" height="<?php echo $video_thumb_height_gshort; ?>" itemprop="thumbnail">
       <?php }?>
     </figure>
@@ -511,19 +518,41 @@ function fun_video_gallery_shortcode($atts)
   <?php } //layout condition 1 close here... ?>
   <?php if(!empty($video_layout_gshort) && $video_layout_gshort == 2) {?>
   <article itemscope itemtype="http://schema.org/VideoObject">
-    <figure> <a href="<?php the_permalink();?>">&nbsp;</a>
+    <figure>
       <?php if(!empty($provider_shortres) && $provider_shortres == 'youtube') {?>
+      <a <?php if($_video_link_target == 'popup'){?> href="http://www.youtube.com/watch?v=<?php echo $video_id_shortres;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?>  title="<?php the_title();?>">&nbsp;</a>
       <img src="http://img.youtube.com/vi/<?php echo $video_id_shortres;?>/0.jpg" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width_gshort; ?>" height="<?php echo $video_thumb_height_gshort; ?>" itemprop="thumbnail">
       <?php } else if(!empty($provider_shortres) && $provider_shortres == 'vimeo') {?>
+      <a <?php if($_video_link_target == 'popup'){?> href="http://vimeo.com/<?php echo $video_id_shortres;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">&nbsp;</a>
       <img src="<?php echo getVimeoThumb($video_id_shortres);?>" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width_gshort; ?>" height="<?php echo $video_thumb_height_gshort; ?>" itemprop="thumbnail">
       <?php } else if(!empty($provider_shortres) && $provider_shortres == 'dailymotion') {?>
+      <a <?php if($_video_link_target == 'popup'){?> href="http://www.dailymotion.com/embed/video/<?php echo $video_id_shortres;?>?iframe=true&width=500&height=344" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">&nbsp;</a>
       <img src="http://www.dailymotion.com/thumbnail/video/<?php echo $video_id_shortres;?>" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width_gshort; ?>" height="<?php echo $video_thumb_height_gshort; ?>" itemprop="thumbnail">
       <?php }?>
     </figure>
     <header>
-      <h1 itemprop="name"> <a href="<?php the_permalink();?>">
+      <h1 itemprop="name"> 
+      <?php if(!empty($provider_shortres) && $provider_shortres == 'youtube')
+	  { ?>
+       <a <?php if($_video_link_target == 'popup'){?> href="http://www.youtube.com/watch?v=<?php echo $video_id_shortres;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?>  title="<?php the_title();?>">
         <?php $title = get_the_title(); echo substr($title,0,27);?>
-        </a> </h1>
+        </a> 
+      <?php }elseif(!empty($provider_shortres) && $provider_shortres == 'vimeo')
+	  {?>
+       <a <?php if($_video_link_target == 'popup'){?> href="http://vimeo.com/<?php echo $video_id_shortres;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">
+        <?php $title = get_the_title(); echo substr($title,0,27);?>
+        </a> 
+      <?php }elseif(!empty($provider_shortres) && $provider_shortres == 'dailymotion')
+	  {?>
+      <a <?php if($_video_link_target == 'popup'){?> href="http://www.dailymotion.com/embed/video/<?php echo $video_id_shortres;?>?iframe=true&width=500&height=344" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">
+        <?php $title = get_the_title(); echo substr($title,0,27);?>
+        </a> 
+      <?php }else{?>
+      <a href="<?php the_permalink();?>">
+        <?php $title = get_the_title(); echo substr($title,0,27);?>
+        </a> 
+        <?php } ?>
+        </h1>
       <?php if(!empty($vposted_date_display_gshort)) {?>
       <p><span itemprop="datePublished">Posted <?php echo human_time_diff( get_the_time('U'), current_time('timestamp') ) . ' ago';?></span><span itemprop="playCount"><?php echo getPostViews($postid);?> Views</span></p>
       <?php } ?>
@@ -654,8 +683,8 @@ function fun_video_post_shortcode($atts)
 			
 	$vposted_date_display_pshort = $data_results['vposted_date_display'];
 
-	/*$video_sthumb_width_pres = $data_results['video_sthumb_width'];
-	$video_sthumb_height_pres = $data_results['video_sthumb_height'];*/
+	$video_sthumb_width_pres = $data_results['video_sthumb_width'];
+	$video_sthumb_height_pres = $data_results['video_sthumb_height'];
 ?>
 <?php if(!empty($videoPost_id)) {?>
 <?php 
@@ -667,16 +696,6 @@ $posttitle = $getpost->post_title; //returns post title..
 
 $provider_pres= get_post_meta($videoPost_id,'video_provider',true); // returns video provider from post..
 $video_id_pres = get_post_meta($videoPost_id, 'video_id', true ); //returns corresponding video id..
-$video_sthumb_width_pres=get_post_meta($videoPost_id, '_custom_video_size_width', true ); //returns video custom width value
-if(empty($video_sthumb_width_pres))
-{
-	$video_sthumb_width_pres=$data_results['video_sthumb_width'];
-}
-$video_sthumb_height_pres=get_post_meta($videoPost_id, '_custom_video_size_height', true ); //returns video custom height value
-if(empty($video_sthumb_height_pres))
-{
-	$video_sthumb_height_pres=$data_results['video_sthumb_height'];
-}
 ?>
 <?php if(!empty($video_id_pres)) {?>
 <figure>
@@ -789,10 +808,33 @@ return $single_template;
 */
 add_action('wp_enqueue_scripts', 'rio_video_style_hook');
 function rio_video_style_hook() {
- //for enabling style.
- $css_path = plugins_url().'/rio-video-gallery/css/video-gallery-style.css';
+	if (!wp_script_is( 'jquery.min.js', 'enqueued' )) 
+	{
+		
+       		wp_register_script('jquery-min', 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js', 'jquery',false,true);
+	   		wp_enqueue_script('jquery-min');
+     
+	 }
+	  if (!wp_script_is( 'jquery.prettyPhoto.js', 'enqueued' )) 
+	  {
+		  
+			wp_register_script('prettyPhoto', plugins_url() . '/rio-video-gallery/js/jquery.prettyPhoto.js', 'jquery',false,true);
+			wp_enqueue_script('prettyPhoto');
+	  
+	  }
+	  if (!wp_script_is( 'jquery.custom.js', 'enqueued' )) 
+	  {
+		  
+			wp_register_script('custom', plugins_url() . '/rio-video-gallery/js/jquery.custom.js', 'jquery', '1.0', TRUE);
+			wp_enqueue_script('custom');
+	 
+	 }
+	
+	 //for enabling style.
+	 $css_path = plugins_url().'/rio-video-gallery/css/video-gallery-style.css';
 	 wp_register_style( 'video-custom-style', $css_path);
 	 wp_enqueue_style( 'video-custom-style' );
+	 
 }
 /*
 |--------------------------------------------------------------------------
