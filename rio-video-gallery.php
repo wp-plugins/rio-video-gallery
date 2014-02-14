@@ -40,7 +40,14 @@ function codex_custom_video_gallery() {
     'parent_item_colon' => '',
     'menu_name' => 'Video Gallery'
   );
-
+//switch menu image based on version
+	if ( defined( 'MP6' ) && MP6 || version_compare( get_bloginfo( 'version' ), '3.8-dev', '>=' ) ) {
+		$icon_url = 'dashicons-format-video';
+	}
+	else
+	{
+		$icon_url = plugins_url().'/rio-video-gallery/img/video_sb_icon.png';
+	}
   $args = array(
     'labels' => $labels,
     'public' => true,
@@ -53,7 +60,7 @@ function codex_custom_video_gallery() {
     'has_archive' => true, 
     'hierarchical' => false,
     'menu_position' => null,
-	'menu_icon' => plugins_url().'/rio-video-gallery/img/video_sb_icon.png',
+	'menu_icon' => $icon_url,
     'supports' => array( 'title', 'editor', 'thumbnail','comments')
   ); 
 
