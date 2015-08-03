@@ -1,38 +1,65 @@
-<?php get_header(); 
+<?php get_header();
+
 $obj = get_post_type_object( 'video-gallery' );
 $singular_name = $obj->labels->singular_name;
+
+function pagination_bar() {
+    global $wp_query;
+ 
+    $total_pages = $wp_query->max_num_pages;
+ 
+    if ($total_pages > 1){
+        $current_page = max(1, get_query_var('paged'));
+ 
+        echo paginate_links(array(
+            'base' => get_pagenum_link(1) . '%_%',
+            'format' => '/page/%#%',
+            'current' => $current_page,
+            'total' => $total_pages,
+        ));
+    }
+}
+
+function limit_text($string, $repl, $limit) {
+  if(strlen($string) > $limit) 
+  {
+    return strip_tags(substr($string, 0, $limit) . $repl); 
+  }
+  else 
+  {
+    return strip_tags($string);
+  }
+}
+ 
+
 ?>
 <?php
 //get video_settings options in serialized format...
 $data_results = get_option('video_gallery_settings');
 
-$videog_main_title_res = $data_results['videog_main_title'];//main title
-$vposted_date_display_res = $data_results['vposted_date_display'];//posted date and view count
-$video_thumb_width = $data_results['video_thumb_width'];//video thumb widtg
-$video_thumb_height = $data_results['video_thumb_height'];//video thunb height
-$video_layout = $data_results['video_layout'];//video layout
+$videog_main_title_res = $data_results['videog_main_title'];
+$video_thumb_width = $data_results['video_thumb_width'];
+$video_thumb_height = $data_results['video_thumb_height'];
 if(empty($video_thumb_width) || empty($video_thumb_height))
 {
-	$video_thumb_width = 300;
-	$video_thumb_height = 200;
+$video_thumb_width = 300;
+$video_thumb_height = 200;
 }
-//video link target
-	$_video_link_target = $data_results['_video_link_target'];
+// $video_count_gshort = $data_results['video_count'];
+if(empty($data_results['video_count']))
+{
+$video_count = 5;
+}
 
-	if(empty($_video_link_target))
-	{
-	$_video_link_target='popup';
-	}
 ?>
-<section id="content-area"> 
-  <!-- //Left column -->
-  <div class="left-column rio-video-container" id="rio-video-category">
-    <h1><?php if(!empty($videog_main_title_res)){ echo $videog_main_title_res;}else{ echo $singular_name;}?></h1>
-    <!-- //Single news item -->
-   <?php
+
+<h1><?php echo $singular_name;?></h1>
+<section id="rio-video-gallery-container-archive"> 
+ <!-- //Single news item -->
+ <?php
 			 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
     $qargs = array(
-	'posts_per_page' => 10,
+	'posts_per_page' => $video_count,
 	'post_type' => 'video-gallery',
 	'paged' => $paged,
 	'meta_key' => 'video_post_order',
@@ -42,92 +69,60 @@ if(empty($video_thumb_width) || empty($video_thumb_height))
 
 		$the_query = new WP_Query( $qargs );
 		if ( $the_query->have_posts() ) : while ( $the_query->have_posts() ) : $the_query->the_post();
-			$postid = get_the_ID();
 			$image = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'single-post-thumbnail' );
 			$video_provider = get_post_meta(get_the_ID(), 'video_provider', true );
 			$video_id = get_post_meta(get_the_ID(), 'video_id', true );
 			?>
-    <?php if(empty($video_layout) || $video_layout == 1) {?>
-<article>
-  <figure>
-    <?php if(!empty($video_provider) && $video_provider == 'youtube') {?>
-     <a <?php if($_video_link_target == 'popup'){?> href="http://www.youtube.com/watch?v=<?php echo $video_id;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?>  title="<?php the_title();?>">&nbsp;</a>
-    <img src="http://img.youtube.com/vi/<?php echo $video_id;?>/0.jpg" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width; ?>" height="<?php echo $video_thumb_height; ?>">
-    <?php } else if(!empty($video_provider) && $video_provider == 'vimeo') {?>
-     <a <?php if($_video_link_target == 'popup'){?> href="http://vimeo.com/<?php echo $video_id;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">&nbsp;</a>
-    <img src="<?php echo getVimeoThumb($video_id);?>" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width; ?>" height="<?php echo $video_thumb_height; ?>">
-    <?php } else if(!empty($video_provider) && $video_provider == 'dailymotion') {?>
-    <a <?php if($_video_link_target == 'popup'){?> href="http://www.dailymotion.com/embed/video/<?php echo $video_id;?>?iframe=true&width=500&height=344" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">&nbsp;</a>
-    <img src="http://www.dailymotion.com/thumbnail/video/<?php echo $video_id;?>" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width; ?>" height="<?php echo $video_thumb_height; ?>">
-    <?php }?>
-     </figure>
-  <header>
-    <?php if(!empty($vposted_date_display_res)) {?>
-    <p><span>Views <?php echo getPostViews($postid);?></span><span><?php echo human_time_diff( get_the_time('U'), current_time('timestamp') ) . ' ago';?></span></p>
-    <?php } ?>
-  </header>
-</article>
-<?php } //layout condition 1 close here... ?>
-<?php if(!empty($video_layout) && $video_layout == 2) {?>
-<article>
-  <figure>
-    <?php if(!empty($video_provider) && $video_provider == 'youtube') {?>
-     <a <?php if($_video_link_target == 'popup'){?> href="http://www.youtube.com/watch?v=<?php echo $video_id;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?>  title="<?php the_title();?>">&nbsp;</a>
-    <img src="http://img.youtube.com/vi/<?php echo $video_id;?>/0.jpg" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width; ?>" height="<?php echo $video_thumb_height; ?>">
-    <?php } else if(!empty($video_provider) && $video_provider == 'vimeo') {?>
-    <a <?php if($_video_link_target == 'popup'){?> href="http://vimeo.com/<?php echo $video_id;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">&nbsp;</a>
-    <img src="<?php echo getVimeoThumb($video_id);?>" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width; ?>" height="<?php echo $video_thumb_height; ?>">
-    <?php } else if(!empty($video_provider) && $video_provider == 'dailymotion') {?>
-    <a <?php if($_video_link_target == 'popup'){?> href="http://www.dailymotion.com/embed/video/<?php echo $video_id;?>?iframe=true&width=500&height=344" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">&nbsp;</a>
-    <img src="http://www.dailymotion.com/thumbnail/video/<?php echo $video_id;?>" alt="<?php the_title();?>" title="<?php the_title();?>" width="<?php echo $video_thumb_width; ?>" height="<?php echo $video_thumb_height; ?>">
-    <?php }?>
-     </figure>
-  <header> <h1 itemprop="name"> 
-      <?php if(!empty($video_provider) && $video_provider == 'youtube')
-	  { ?>
-       <a <?php if($_video_link_target == 'popup'){?> href="http://www.youtube.com/watch?v=<?php echo $video_id;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?>  title="<?php the_title();?>">
-        <?php $title = get_the_title(); echo substr($title,0,27);?>
-        </a> 
-      <?php }elseif(!empty($video_provider) && $video_provider == 'vimeo')
-	  {?>
-       <a <?php if($_video_link_target == 'popup'){?> href="http://vimeo.com/<?php echo $video_id;?>" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">
-        <?php $title = get_the_title(); echo substr($title,0,27);?>
-        </a> 
-      <?php }elseif(!empty($video_provider) && $video_provider == 'dailymotion')
-	  {?>
-      <a <?php if($_video_link_target == 'popup'){?> href="http://www.dailymotion.com/embed/video/<?php echo $video_id;?>?iframe=true&width=500&height=344" rel="prettyPhoto" <?php }else{?> href="<?php the_permalink();?>"<?php } ?> title="<?php the_title();?>">
-        <?php $title = get_the_title(); echo substr($title,0,27);?>
-        </a> 
-      <?php }else{?>
-      <a href="<?php the_permalink();?>">
-        <?php $title = get_the_title(); echo substr($title,0,27);?>
-        </a> 
-        <?php } ?>
-        </h1>
-    <?php if(!empty($vposted_date_display_res)) {?>
-    <p><span>Views <?php echo getPostViews($postid);?></span><span><?php echo human_time_diff( get_the_time('U'), current_time('timestamp') ) . ' ago';?></span></p>
-    <?php } ?>
-  </header>
-</article>
-<?php } //layout condition 2 close here... ?>
-    <?php endwhile; else : echo '<p>No videos found</p>'; endif; wp_reset_postdata();?>
-    <p class="pagination"><?php
+ <article itemscope itemtype="http://schema.org/VideoObject">
+  <figure> <a href="<?php the_permalink(); ?>">
+   <?php if(!empty($video_provider) && $video_provider == 'youtube') {?>
+   <img alt="<?php the_title();?>" width="<?php echo $video_thumb_width; ?>" height="<?php echo $video_thumb_height; ?>" src="http://img.youtube.com/vi/<?php echo $video_id; ?>/0.jpg" itemprop="thumbnail">
+   <?php } else if(!empty($video_provider) && $video_provider == 'vimeo') {
+	   
+			 	$imgid = $video_id;			
+			$thumb = getVimeoInfo_details($imgid);
+			if(empty($thumb))
+			{
+				$thumb=plugins_url().'/rio-video-gallery/img/video-failed.png';
+			}
+	  ?>     
+   <img alt="<?php the_title();?>" width="<?php echo $video_thumb_width; ?>" height="<?php echo $video_thumb_height; ?>" src="<?php echo $thumb; ?>" itemprop="thumbnail">
+   <?php } else if(!empty($video_provider) && $video_provider == 'dailymotion') {
+	  ?>
+   <img alt="<?php the_title();?>" width="<?php echo $video_thumb_width; ?>" height="<?php echo $video_thumb_height; ?>" src="http://www.dailymotion.com/thumbnail/video/<?php echo $video_id;?>" itemprop="thumbnail">
+   <?php }?>
+   </a></figure>
+  <section>
+   <header>
+    <h1><a href="<?php the_permalink();?>" itemprop="name">
+     <?php $title = get_the_title(); echo substr($title,0,50);?>
+     </a></h1>
+    <p>
+     <?php if(!empty($video_provider)) { ?>
+     <span class="video_provider"><?php echo $video_provider; ?></span>
+     <?php } ?>
+     <span itemprop="playCount"><?php echo getPostViews($post->ID);?> Views</span><span itemprop="datePublished"><?php echo human_time_diff( get_the_time('U'), current_time('timestamp') ) . ' ago';?></span></p>
+   </header>
+   <p itemprop="description">
+    <?php $content = get_the_content(); echo limit_text($content, "...", 200); ?>
+   </p>
+  </section>
+ </article>
+ <?php endwhile; else : echo 'No videos found'; endif; wp_reset_postdata();?>
+</section>
+<div class="clearFixer">&nbsp;</div>
+<p class="pagination">
+ <?php
 	if(function_exists('wp_pagenavi')){ wp_pagenavi(); }
 	else
 	{
-$big = 999999999; // need an unlikely integer
-echo paginate_links( array(
-	'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-	'format' => '?paged=%#%',
-	'current' => max( 1, get_query_var('paged') ),
-	'total' => $the_query->max_num_pages
-) ); 
+ pagination_bar(); 
+
 	}
 
 ?>
 </p>
-  </div>
-  <!-- //sidebar -->
- <?php get_sidebar(); ?>
-</section>
+<?php wp_reset_query(); ?>
+<!-- //sidebar -->
 <?php get_footer(); ?>
+
