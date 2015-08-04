@@ -1,6 +1,6 @@
 === Rio Video Gallery ===
 Contributors: Riosis Group
-Donate link: http://riosis.com/themes/rio-video-gallery/
+Donate link: http://www.riosis.com/
 Tags: Video Gallery, YouTube, Vimeo, Dailymotion
 Requires at least: 3.5
 Tested up to: 4.2.3
