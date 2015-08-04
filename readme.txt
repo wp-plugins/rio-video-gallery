@@ -56,3 +56,14 @@ After installing plugin, Please update the permalink structure with "/%category%
 = 1.0 =
 * The first released version
 * Added help and UI improvements
+
+== Upgrade Notice ==
+
+= 2.0 =
+Updated the core with latest libraries & UI. MAde compatible with latest version of WordPress.
+
+= 1.1 =
+Added Popup to Video items & several bug fixes.
+
+= 1.0 =
+First Version of the plugin.

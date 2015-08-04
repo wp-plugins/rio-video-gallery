@@ -189,8 +189,6 @@ function fun_video_gallery_metabox_display($video_gallery)
   </tr>
  </table>
 </div>
-<script src="<?php echo plugins_url(); ?>/rio-video-gallery/js/jquery-1.11.1.min"></script>
-<script src="<?php echo plugins_url();?>/rio-video-gallery/js/jquery_ui.js"></script>
 <script type="application/javascript">
 jQuery(document).ready(function($){ $('.tooltip').tooltip(); });
 </script>
@@ -612,7 +610,6 @@ function fun_video_gallery_shortcode($atts)
 			$video_thumb_width_gshort = 230;
 		}
 ?>
-<script src="<?php echo plugins_url(); ?>/rio-video-gallery/js/jquery-1.11.1.min.js"></script>
 <script src="<?php echo plugins_url();?>/rio-video-gallery/js/video-gallery-script.js"></script>
 <script>
 jQuery(document).ready(function($){
