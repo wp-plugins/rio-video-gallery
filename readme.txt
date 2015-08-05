@@ -44,10 +44,9 @@ After installing plugin, Please update the permalink structure with "/%category%
 * Upated jQuery & related libraries.
 * Updated UI as responsive.
 * Now works with your theme styles and can style as you need.
-* Included Masonry layout (credits go to David DeSandro).
+* Included CSS3 Masonry layout. Not works with IE9 & below.
 * Fixed reported bugs from users.
 * Will work in your own theme templates.
-* Added video provider notification.
 
 = 1.1 =
 * Added Popup to Video items
