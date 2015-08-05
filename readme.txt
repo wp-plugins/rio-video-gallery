@@ -3,7 +3,7 @@ Contributors: Riosis Group
 Donate link: http://www.riosis.com/
 Tags: Video Gallery, YouTube, Vimeo, Dailymotion
 Requires at least: 3.5
-Tested up to: 4.2.3
+Tested up to: 4.2.4
 Stable tag: 2.0
 License: GPLv2
 
@@ -59,7 +59,7 @@ After installing plugin, Please update the permalink structure with "/%category%
 == Upgrade Notice ==
 
 = 2.0 =
-Updated the core with latest libraries & UI. MAde compatible with latest version of WordPress.
+Updated the core with latest libraries & UI. Made compatible with latest version of WordPress.
 
 = 1.1 =
 Added Popup to Video items & several bug fixes.
