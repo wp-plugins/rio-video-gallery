@@ -9,17 +9,6 @@
  */
 ?>
 <?php
-// error_reporting(0);
-add_action('init', 'wptuts_activate_au');
-function wptuts_activate_au()
-{
-	require_once ('wp_autoupdate.php');
-
-	$wptuts_plugin_current_version = '1.0';
-	$wptuts_plugin_remote_path = 'http://riosis.com/rio_plugins/rio_video_gallery/update.php';
-	$wptuts_plugin_slug = plugin_basename(__FILE__);
-	new wp_auto_update($wptuts_plugin_current_version, $wptuts_plugin_remote_path, $wptuts_plugin_slug);
-}
 function getVimeoInfo_details($id, $info = 'thumbnail_medium')
 {
 	if (!function_exists('curl_init')) die('CURL is not installed!');
@@ -611,15 +600,6 @@ function fun_video_gallery_shortcode($atts)
 		}
 ?>
 <script src="<?php echo plugins_url();?>/rio-video-gallery/js/video-gallery-script.js"></script>
-<script>
-jQuery(document).ready(function($){
-  jQuery('.rio-video-gallery-container-shortcode').masonry({
-    itemSelector: '.video-item',
-  	gutter: 10,
-    columnWidth: <?php echo $video_thumb_width_gshort; ?>
-  });
-});
-</script>
 <?php }
 	add_action('wp_footer', 'wp_script_file2');
 }
@@ -884,7 +864,7 @@ function get_video_gallery_type_template($single_template)
 			$single_template.= "<figcaption><span>Posted " . human_time_diff(get_the_time('U') , current_time('timestamp')) . ' ago' . "</span><span>" . getPostViews($post_ID) . " Views</span></figcaption></figure><div class='clearFixer'>&nbsp;</div><p>" . str_replace("\r", "<br />", get_the_content(''))."</p>";
 			if (!empty($display_related_posts) && $display_related_posts == 1) {
 				$single_template.= "<div class='clearFixer'>&nbsp;</div>
-        <h3>Related Posts</h3>";
+        <h4>Related Posts</h4>";
 				$single_template.= "<div class='related-posts-container'>";
 				$args = array(
 					'post_type' => 'video-gallery',
