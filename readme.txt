@@ -4,12 +4,12 @@ Donate link: http://www.riosis.com/
 Tags: Video Gallery, YouTube, Vimeo, Dailymotion
 Requires at least: 3.5
 Tested up to: 4.2.4
-Stable tag: 2.0
+Stable tag: 2.1
 License: GPLv2
 
 == Description ==
 
-A powerful Video Gallery plugin that allows you to embed videos from YouTube, Vimeo and Daily motion through categories. You can manage them through a neat and user-friendly settings panel. Also added a help option for your reference. 
+A powerful Video Gallery plugin that allows you to embed videos from YouTube, Vimeo and Dailymotion through categories. You can manage them through a neat and user-friendly settings panel. Also included a help section for your reference. 
 
 == Installation ==
 
@@ -33,18 +33,22 @@ After installing plugin, Please update the permalink structure with "/%category%
 
 == Screenshots ==
 
-1. Add video interface.
+1. Add Video interface.
 2. Settings panel.
 3. Video Gallery Preview.
 4. Video Gallery Preview with details.
 
 == Changelog ==
 
+= 2.1 =
+* Upated JQuery masonry with CSS3 masonry. Not works with IE9 & below.
+* Tested with WordPress version 4.2.4
+
 = 2.0 =
 * Upated jQuery & related libraries.
 * Updated UI as responsive.
 * Now works with your theme styles and can style as you need.
-* Included CSS3 Masonry layout. Not works with IE9 & below.
+* Included JQuery Masonry layout.
 * Fixed reported bugs from users.
 * Will work in your own theme templates.
 
@@ -57,6 +61,9 @@ After installing plugin, Please update the permalink structure with "/%category%
 * Added help and UI improvements
 
 == Upgrade Notice ==
+
+= 2.1 =
+Tested with WordPress version 2.1 and several updations.
 
 = 2.0 =
 Updated the core with latest libraries & UI. Made compatible with latest version of WordPress.
