@@ -11,6 +11,18 @@ License: GPLv2
 
 A powerful Video Gallery plugin that allows you to embed videos from YouTube, Vimeo and Dailymotion through categories. You can manage them through a neat and user-friendly settings panel. Also included a help section for your reference. 
 
+= Features =
+* Embed videos from YouTube, Vimeo and Dailymotion
+* Easy to install and use.
+* Works with your theme's files and UI style.
+* You can style as you need.
+* A complete help guid for your support.
+* Responsive & latest UI.
+* Two types of layouts.
+* Can order videos as you need with numbers.
+* Shortcode for full gallery, categorised gallery and single video.
+* Customizable video thumbnail and player size.
+
 == Installation ==
 
 You can download and install Rio Video Gallery using the built in WordPress plugin installer. If you download Rio Video Gallery manually, below section describes how to install the plugin and get it working in 5 simple steps.
