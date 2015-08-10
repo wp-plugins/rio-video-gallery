@@ -3,7 +3,7 @@
  * Plugin Name: Rio Video Gallery
  * Plugin URI: http://www.riosis.com
  * Description: A powerful video gallery management plugin.
- * Version: 2.0
+ * Version: 2.1
  * Author: Riosis Web Team
  * Author URI: http://www.riosis.com
  */
