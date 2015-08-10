@@ -16,7 +16,7 @@ A powerful Video Gallery plugin that allows you to embed videos from YouTube, Vi
 * Easy to install and use.
 * Works with your theme's files and UI style.
 * You can style as you need.
-* A complete help guid for your support.
+* A complete help guide for your support.
 * Responsive & latest UI.
 * Two types of layouts.
 * Can order videos as you need with numbers.
